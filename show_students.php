@@ -1,7 +1,7 @@
 <?php
 include('includes/db.php');
 
-$sql = "SELECT * FROM students ORDER BY id DESC";
+$sql = "SELECT * FROM users ORDER BY id DESC";
 $result = $conn->query($sql);
 ?>
 

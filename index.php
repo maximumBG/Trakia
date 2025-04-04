@@ -6,19 +6,24 @@ include('includes/header.php');
 <div class="text-center my-4">
     <h1 class="text-primary">Управление на потребители</h1>
     <p>Добавяй, преглеждай и управлявай потребителите с лекота</p>
-    <a href="add_student.php" class="btn btn-success me-2">
-        <i class="fas fa-plus"></i> Добави потребител
-    </a>
+
+    <?php if (isAdmin()): ?> <!-- 🔹 Само за админи -->
+        <a href="add_student.php" class="btn btn-success me-2">
+            <i class="fas fa-plus"></i> Добави потребител
+        </a>
+    <?php endif; ?>
+
     <a href="show_students.php" class="btn btn-info">
         <i class="fas fa-users"></i> Всички потребители
     </a>
 </div>
 
+
 <div class="table-container">
     <h2 class="text-center text-primary">Последни добавени потребители</h2>
     <div class="table-responsive">
         <?php
-        $sql = "SELECT * FROM students ORDER BY id DESC LIMIT 5";
+        $sql = "SELECT * FROM users ORDER BY id DESC LIMIT 5";
         $result = $conn->query($sql);
         if ($result->num_rows > 0) {
             echo "<table class='table table-striped table-bordered text-center'>";

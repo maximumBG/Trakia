@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $phone = $_POST['phone'];
     $birth_date = $_POST['birth_date'];
 
-    $sql = "INSERT INTO students (first_name, last_name, email, phone, birth_date)
+    $sql = "INSERT INTO users (first_name, last_name, email, phone, birth_date)
             VALUES ('$first_name', '$last_name', '$email', '$phone', '$birth_date')";
     
     if ($conn->query($sql) === TRUE) {

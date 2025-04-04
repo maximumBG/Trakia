@@ -1,56 +1,43 @@
 <?php
-// 1. Изчистване на изходните буфери
-while (ob_get_level()) ob_end_clean();
+// 1. Задължителни проверки в началото
+if (session_status() === PHP_SESSION_NONE) session_start();
+require_once 'includes/auth.php';
+require_once 'includes/db.php';
+require_once 'phpqrcode.php';
 
-// 2. Задаване на headers за изображение
-header('Content-Type: image/png');
-header('Content-Disposition: inline; filename="qr_profile.png"');
-header('Content-Type: image/png; charset=utf-8');
-
-// 3. Включване на необходимите файлове
-require_once __DIR__.'/phpqrcode.php';
-include('includes/db.php');
-
-// 4. Вземане на ID от заявката
-$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-
-if ($id > 0) {
-    // 5. Заявка към базата данни
-    $sql = "SELECT * FROM students WHERE id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows > 0) {
-        $user = $result->fetch_assoc();
-        
-        $qrText = "BEGIN:VCARD\n";
-        $qrText .= "VERSION:3.0\n";
-        $qrText .= "N:".$user['last_name'].";".$user['first_name']."\n";
-        $qrText .= "FN:".$user['first_name']." ".$user['last_name']."\n";
-        $qrText .= "TEL:".$user['phone']."\n";
-        $qrText .= "EMAIL:".$user['email']."\n";
-        $qrText .= "BDAY:".$user['birth_date']."\n";
-        $qrText .= "END:VCARD";
-        
-
-        // 7. Генериране на QR код
-        QRcode::png(
-            $qrText,
-            null,             // Не записва във файл
-            QR_ECLEVEL_H,     // Висока корекция на грешки
-            12,              // Размер
-            4,               // Марж
-            false,           // Не показва директно
-            0xFFFFFF,        // Бял фон
-            0x000000         // Черен QR код
-        );
-        exit();
-    }
+// 2. Проверка за автентикиран потребител
+if (!isLoggedIn()) {
+    die("Достъпът е отказан! Моля, влезте в системата.");
 }
 
-// 8. Грешка - съобщение в QR код
-QRcode::png('Грешка: Невалиден потребител', null, QR_ECLEVEL_L, 10, 2);
+// 3. Вземане на ID от заявката
+$id = isset($_GET['id']) ? (int)$_GET['id'] : $_SESSION['user_id'];
+
+// 4. Защита срещу SQL инжекции
+$stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$user = $stmt->get_result()->fetch_assoc();
+
+if (!$user) {
+    die("Потребителят не е намерен!");
+}
+
+// 5. Форматиране на данните за QR кода
+$qrData = "BEGIN:VCARD\n";
+$qrData .= "VERSION:3.0\n";
+$qrData .= "FN:" . htmlspecialchars($user['first_name'] . ' ' . $user['last_name']) . "\n";
+$qrData .= "TEL:" . htmlspecialchars($user['phone']) . "\n";
+$qrData .= "EMAIL:" . htmlspecialchars($user['email']) . "\n";
+$qrData .= "NOTE:Генерирано на " . date('d.m.Y') . "\n";
+$qrData .= "END:VCARD";
+
+// 6. Генериране на QR код с правилни headers
+header('Content-Type: image/png');
+header('Content-Disposition: inline; filename="user_qr.png"');
+header('Cache-Control: no-cache, must-revalidate');
+
+// 7. Създаване на QR код
+QRcode::png($qrData, null, QR_ECLEVEL_H, 10, 2);
 exit();
 ?>

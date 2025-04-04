@@ -38,7 +38,7 @@ include '../includes/header.php';
         </div>
         
         <button type="submit" class="btn btn-primary">Запази</button>
-        <a href="dashboard.php" class="btn btn-secondary">Отказ</a>
+        <a href="edit_user.php" class="btn btn-secondary">Отказ</a>
     </form>
 </div>
 
