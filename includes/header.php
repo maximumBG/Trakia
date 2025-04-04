@@ -89,7 +89,7 @@ require_once 'db.php';
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="admin/dashboard.php"><i class="fas fa-tachometer-alt"></i> Табло</a></li>
-                                    <li><a class="dropdown-item" href="show_students.php"><i class="fas fa-users"></i> Потребители</a></li>
+                                    <li><a class="dropdown-item" href="/Trakia/show_students.php"><i class="fas fa-users"></i> Потребители</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" href="settings.php"><i class="fas fa-cog"></i> Настройки</a></li>
                                 </ul>
@@ -97,10 +97,11 @@ require_once 'db.php';
                         <?php endif; ?>
                         
                         <li class="nav-item">
-                            <a class="nav-link" href="generate_qr.php">
-                                <i class="fas fa-qrcode"></i> Моят QR код
-                            </a>
-                        </li>
+                        <a class="nav-link" href="/Trakia/generate_qr.php?id=<?= $_SESSION['user_id']; ?>">
+                        <i class="fas fa-qrcode"></i> Моят QR код
+                    </a>
+                    </li>
+
                     <?php endif; ?>
                 </ul>
                 
