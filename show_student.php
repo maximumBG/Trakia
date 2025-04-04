@@ -1,5 +1,5 @@
 <?php
-include('db.php');
+include('includes/db.php');
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
@@ -18,7 +18,7 @@ if (isset($_GET['id'])) {
 }
 ?>
 
-<?php include('header.php'); ?>
+<?php include('includes/header.php'); ?>
 
 <h1 class="text-center text-primary my-5">Преглед на потребител</h1>
 
@@ -39,4 +39,4 @@ if (isset($_GET['id'])) {
     </div>
 </div>
 
-<?php include('footer.php'); ?>
+<?php include('includes/footer.php'); ?>

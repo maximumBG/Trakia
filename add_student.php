@@ -1,5 +1,5 @@
 <?php
-include('db.php');
+include('includes/db.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $first_name = $_POST['first_name'];
@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<?php include('header.php'); ?>
+<?php include('includes/header.php'); ?>
 
 <h1 class="text-center text-primary my-5">Добави нов потребител</h1>
 
@@ -52,4 +52,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <button type="submit" class="btn btn-primary w-100">Добави потребител</button>
 </form>
 
-<?php include('footer.php'); ?>
+<?php include('includes/footer.php'); ?>

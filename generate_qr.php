@@ -9,7 +9,7 @@ header('Content-Type: image/png; charset=utf-8');
 
 // 3. Включване на необходимите файлове
 require_once __DIR__.'/phpqrcode.php';
-include('db.php');
+include('includes/db.php');
 
 // 4. Вземане на ID от заявката
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;

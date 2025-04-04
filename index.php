@@ -1,6 +1,6 @@
 <?php
-include('header.php');
-include('footer.php');
+include('includes/header.php');
+
 ?>
 
 <div class="text-center my-4">
@@ -45,5 +45,5 @@ include('footer.php');
 </div>
 
 <?php
-include('footer.php');
+include('includes/footer.php');
 ?>

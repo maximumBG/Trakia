@@ -1,11 +1,11 @@
 <?php
-include('db.php');
+include('includes/db.php');
 
 $sql = "SELECT * FROM students ORDER BY id DESC";
 $result = $conn->query($sql);
 ?>
 
-<?php include('header.php'); ?>
+<?php include('includes/header.php'); ?>
 
 <h1 class="text-center text-primary my-5">Списък на потребителите</h1>
 
@@ -32,4 +32,4 @@ if ($result->num_rows > 0) {
 }
 ?>
 
-<?php include('footer.php'); ?>
+<?php include('includes/footer.php'); ?>
