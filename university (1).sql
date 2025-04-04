@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 04, 2025 at 07:57 AM
+-- Generation Time: Apr 04, 2025 at 12:42 PM
 -- Server version: 9.1.0
 -- PHP Version: 8.3.14
 
@@ -61,7 +61,7 @@ INSERT INTO `students` (`id`, `first_name`, `last_name`, `email`, `phone`, `birt
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `first_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -69,18 +69,21 @@ CREATE TABLE IF NOT EXISTS `users` (
   `phone` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `role` enum('user','admin') COLLATE utf8mb4_unicode_ci DEFAULT 'user',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `birth_date` int NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `username` (`username`),
+  UNIQUE KEY `username` (`user`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password`, `email`, `first_name`, `last_name`, `phone`, `role`, `created_at`) VALUES
-(1, 'Иван', '$2y$10$xkCuBv8dpf7eg359I1btjOlO31mJkOmyp2RuqNy/9BGm4kYSe/6Xi', '', '', '', '', 'user', '2025-04-04 06:58:19'),
-(2, 'Karlen trakia', '$2y$10$n6rwwItt.nLDc7vGz4kJnuNQzujyL8Qlc5f.QAZBuol5IeUVaP1bu', 'karlen.arabkertsyan.23@trakia-uni.bg', 'Karlen', 'Arabkertsyan', '08761616', 'admin', '2025-04-04 07:01:22');
+INSERT INTO `users` (`id`, `user`, `password`, `email`, `first_name`, `last_name`, `phone`, `role`, `created_at`, `updated_at`, `birth_date`) VALUES
+(1, 'Иван', '$2y$10$xkCuBv8dpf7eg359I1btjOlO31mJkOmyp2RuqNy/9BGm4kYSe/6Xi', '', '', '', '', 'user', '2025-04-04 06:58:19', '2025-04-04 11:20:30', 0),
+(2, 'Karlen trakia', '$2y$10$n6rwwItt.nLDc7vGz4kJnuNQzujyL8Qlc5f.QAZBuol5IeUVaP1bu', 'karlen.arabkertsyan.23@trakia-uni.bg', 'Karlen', 'Arabkertsyan', '08761616', 'admin', '2025-04-04 07:01:22', '2025-04-04 11:20:30', 0),
+(3, 'Adrian', '$2y$10$8KVr1WX4a7k8aIdJIN9wj.ilGbjOJ7HLDk3qiYp6HMAFz7az9o.yW', 'karlen01@abv.bg', 'Adrian', 'Adrianov', '929293923', 'admin', '2025-04-04 08:00:30', '2025-04-04 12:41:25', 0);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
