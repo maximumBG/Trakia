@@ -7,7 +7,7 @@ $success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // 1. Валидация на входните данни
-    $username = clean_input($_POST['username'] ?? '');
+    $user = clean_input($_POST['user'] ?? '');
     $email = filter_var($_POST['email'] ?? '', FILTER_SANITIZE_EMAIL);
     $password = $_POST['password'] ?? '';
     $confirm_password = $_POST['confirm_password'] ?? '';
@@ -16,9 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $phone = clean_input($_POST['phone'] ?? '');
 
     // 2. Проверки за валидност
-    if (empty($username)) {
+    if (empty($user)) {
         $errors[] = "Потребителското име е задължително!";
-    } elseif (strlen($username) < 4) {
+    } elseif (strlen($user) < 4) {
         $errors[] = "Потребителското име трябва да е поне 4 символа!";
     }
 
@@ -34,8 +34,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // 3. Проверка за съществуващ потребител
     if (empty($errors)) {
-        $stmt = $conn->prepare("SELECT id FROM users WHERE username = ? OR email = ?");
-        $stmt->bind_param("ss", $username, $email);
+        $stmt = $conn->prepare("SELECT id FROM users WHERE user = ? OR email = ?");
+        $stmt->bind_param("ss", $user, $email);
         $stmt->execute();
         $result = $stmt->get_result();
 
@@ -49,8 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $password_hash = password_hash($password, PASSWORD_BCRYPT);
         $role = 'user'; // Основна роля
         
-        $stmt = $conn->prepare("INSERT INTO users (username, email, password, first_name, last_name, phone, role) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssssss", $username, $email, $password_hash, $first_name, $last_name, $phone, $role);
+        $stmt = $conn->prepare("INSERT INTO users (user, email, password, first_name, last_name, phone, role) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssssss", $user, $email, $password_hash, $first_name, $last_name, $phone, $role);
 
         if ($stmt->execute()) {
             $success = "Успешна регистрация! Моля влезте в системата.";
@@ -87,9 +87,9 @@ require_once 'includes/header.php';
                     <?php else: ?>
                         <form method="POST" action="register.php">
                             <div class="mb-3">
-                                <label for="username" class="form-label">Потребителско име*</label>
-                                <input type="text" class="form-control" id="username" name="username" 
-                                       value="<?= htmlspecialchars($username ?? '') ?>" required>
+                                <label for="user" class="form-label">Потребителско име*</label>
+                                <input type="text" class="form-control" id="user" name="user" 
+                                       value="<?= htmlspecialchars($user ?? '') ?>" required>
                             </div>
                             
                             <div class="mb-3">
