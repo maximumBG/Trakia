@@ -1,17 +1,8 @@
 <?php
-require_once '../includes/auth.php';
-redirectIfNotAdmin();
-
-include '../includes/db.php';
-
-$users = $conn->query("SELECT * FROM users")->fetch_all(MYSQLI_ASSOC);
-?>
-<?php include '../includes/header.php'; ?>
-<?php
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/db.php';
 redirectIfNotAdmin();
-
+require_once  'includes/functions.php';
 // Заявка за всички потребители с обработка на грешки
 try {
     $stmt = $conn->prepare("SELECT id, user, email, role, created_at FROM users ORDER BY id DESC");

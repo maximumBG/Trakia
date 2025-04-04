@@ -4,6 +4,10 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+if (!isset($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); // Генерира нов CSRF токен
+}
+
 require_once 'auth.php';
 require_once 'db.php';
 ?>
@@ -12,6 +16,7 @@ require_once 'db.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Управление на потребители</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -42,12 +47,25 @@ require_once 'db.php';
             font-size: 0.7rem;
             vertical-align: super;
         }
+        .list-group-item.active {
+    background-color: #2c3e50;
+    border-color: #2c3e50;
+}
+.card {
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(33, 40, 50, 0.15);
+}
+.card-header {
+    font-weight: 500;
+}
+.card-header:first-child {
+    border-radius: 0.35rem 0.35rem 0 0;
+}
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark mb-4">
         <div class="container">
-            <a class="navbar-brand" href="index.php">
+            <a class="navbar-brand" href="/Trakia/index.php">
                 <i class="fas fa-users-cog"></i> User System
             </a>
             
@@ -59,7 +77,7 @@ require_once 'db.php';
                 <ul class="navbar-nav me-auto">
                     <?php if (isLoggedIn()): ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="profile.php">
+                            <a class="nav-link" href="/Trakia/profile.php">
                                 <i class="fas fa-home"></i> Начало
                             </a>
                         </li>
@@ -70,10 +88,10 @@ require_once 'db.php';
                                     <i class="fas fa-crown"></i> Админ
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="admin/dashboard.php"><i class="fas fa-tachometer-alt"></i> Табло</a></li>
-                                    <li><a class="dropdown-item" href="admin/users.php"><i class="fas fa-users"></i> Потребители</a></li>
+                                    <li><a class="dropdown-item" href="dashboard.php"><i class="fas fa-tachometer-alt"></i> Табло</a></li>
+                                    <li><a class="dropdown-item" href="show_students.php"><i class="fas fa-users"></i> Потребители</a></li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="admin/settings.php"><i class="fas fa-cog"></i> Настройки</a></li>
+                                    <li><a class="dropdown-item" href="settings.php"><i class="fas fa-cog"></i> Настройки</a></li>
                                 </ul>
                             </li>
                         <?php endif; ?>
@@ -98,7 +116,7 @@ require_once 'db.php';
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li><a class="dropdown-item" href="profile.php"><i class="fas fa-user"></i> Профил</a></li>
-                                <li><a class="dropdown-item" href="settings.php"><i class="fas fa-cog"></i> Настройки</a></li>
+                                <li><a class="dropdown-item" href="admin/settings.php"><i class="fas fa-cog"></i> Настройки</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="logout.php"><i class="fas fa-sign-out-alt"></i> Изход</a></li>
                             </ul>
@@ -119,6 +137,28 @@ require_once 'db.php';
             </div>
         </div>
     </nav>
+    <script>
+// AJAX изтриване
+function deleteUser(userId) {
+    if (confirm('Сигурни ли сте?')) {
+        fetch('delete_user.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `id=${userId}&csrf_token=<?= $_SESSION['csrf_token'] ?>`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.reload();
+            } else {
+                alert(data.error || 'Грешка при изтриване');
+            }
+        });
+    }
+}
+</script>
 
     <div class="container">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">

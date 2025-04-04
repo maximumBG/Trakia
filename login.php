@@ -11,11 +11,11 @@ if (isLoggedIn()) {
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username']);
+    $user = trim($_POST['user']);
     $password = $_POST['password'];
     
-    $stmt = $conn->prepare("SELECT id, username, password, role FROM users WHERE username = ?");
-    $stmt->bind_param("s", $username);
+    $stmt = $conn->prepare("SELECT id, user, password, role FROM users WHERE user = ?");
+    $stmt->bind_param("s", $user);
     $stmt->execute();
     $result = $stmt->get_result();
     
@@ -24,14 +24,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         if (password_verify($password, $user['password'])) {
             // Явно задаване на всички сесийни променливи
-            loginUser($user['id'], $user['username'], $user['role']);
+            loginUser($user['id'], $user['user'], $user['role']);
             
             // Записване на лог
-            error_log("User {$user['username']} logged in successfully");
+            error_log("User {$user['user']} logged in successfully");
             
             // Пренасочване според ролята
             if (isAdmin()) {
-                header("Location: admin/admin.php");
+                header("Location: admin/dashboard.php");
             } else {
                 header("Location: profile.php");
             }
@@ -60,8 +60,8 @@ require_once 'includes/header.php';
                 <div class="card-body">
                     <form method="POST" action="login.php">
                         <div class="mb-3">
-                            <label for="username" class="form-label">Потребителско име</label>
-                            <input type="text" class="form-control" id="username" name="username" required>
+                            <label for="user" class="form-label">Потребителско име</label>
+                            <input type="text" class="form-control" id="user" name="user" required>
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Парола</label>

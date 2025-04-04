@@ -11,7 +11,7 @@ if ($conn->connect_error) {
 }
 
 // Създаване на таблицата ако не съществува
-$sql = "CREATE TABLE IF NOT EXISTS students (
+$sql = "CREATE TABLE IF NOT EXISTS users (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,

@@ -28,4 +28,18 @@ function redirectIfNotLoggedIn() {
         exit();
     }
 }
+function checkAdminPrivileges() {
+    if (!isAdmin()) {
+        http_response_code(403);
+        die("Достъпът е забранен! Нямате администраторски права.");
+    }
+}
+function redirectIfNotAdmin() {
+    if (!isAdmin()) {
+        $_SESSION['error'] = "Нямате права за достъп!";
+        header("Location: ../index.php");
+        exit();
+    }
+}
+
 ?>
