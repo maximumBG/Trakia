@@ -88,7 +88,7 @@ require_once 'db.php';
                                     <i class="fas fa-crown"></i> Админ
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="dashboard.php"><i class="fas fa-tachometer-alt"></i> Табло</a></li>
+                                    <li><a class="dropdown-item" href="admin/dashboard.php"><i class="fas fa-tachometer-alt"></i> Табло</a></li>
                                     <li><a class="dropdown-item" href="show_students.php"><i class="fas fa-users"></i> Потребители</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" href="settings.php"><i class="fas fa-cog"></i> Настройки</a></li>

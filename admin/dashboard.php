@@ -61,10 +61,15 @@ require_once __DIR__ . '/../includes/header.php';
                             <i class="fas fa-edit"></i> Редактирай
                         </a>
                         <?php if ($user['id'] != $_SESSION['user_id']): ?>
-                        <a href="delete_user.php?id=<?= $user['id'] ?>" class="btn btn-sm btn-danger" 
-                           onclick="return confirm('Сигурни ли сте, че искате да изтриете този потребител?')">
-                            <i class="fas fa-trash-alt"></i> Изтрий
-                        </a>
+                            <form action="delete_user.php" method="POST" onsubmit="return confirm('Сигурни ли сте, че искате да изтриете този потребител?');">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+    <input type="hidden" name="id" value="<?= $user['id'] ?>">
+    <button type="submit" class="btn btn-danger btn-sm">
+        <i class="fas fa-trash"></i> Изтрий
+    </button>
+</form>
+
+
                         <?php endif; ?>
                     </td>
                 </tr>

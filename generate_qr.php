@@ -16,7 +16,7 @@ $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
 if ($id > 0) {
     // 5. Заявка към базата данни
-    $sql = "SELECT * FROM students WHERE id = ?";
+    $sql = "SELECT * FROM users WHERE id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $id);
     $stmt->execute();
